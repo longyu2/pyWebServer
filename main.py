@@ -23,7 +23,12 @@ def router(req_str):
     if req_path == "/":
         req_path = "/index.html"
 
-    mime_type = req_path.split(".")[1]  # 截取请求的mime类型
+    mime_type = ""
+    try:
+        mime_type = req_path.split(".")[1]  # 截取请求的mime类型
+    except:
+        mime_type = ""
+
     content_type = ""  # 响应头的mime类型
 
     # 设置响应头mime
@@ -61,7 +66,9 @@ def router(req_str):
                 "HTTP/1.1 200 OK \nContent-Type: " + content_type + "\n\n"
             ).encode() + fp.read()
     except:
-        res_byte = "404找不到文件".encode()
+        res_byte = (
+            "HTTP/1.1 200 OK \nContent-Type: text/plain\n\n 404 not found".encode()
+        )
     return res_byte
 
 
